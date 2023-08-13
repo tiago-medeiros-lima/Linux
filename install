@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Arch packages
+yay_git="https://aur.archlinux.org/yay.git"
+pacman_pkgs=( flatpak ttf-liberation ttf-dejavu docker kubectl helm ansible terraform aws-cli gnome-tweaks fakeroot vim git curl wget zsh terminator bitwarden)
+yay_pkgs=(google-chrome visual-studio-code-bin spotify whatsapp-nativefier)
+dotfiles_repo="https://github.com/tiago-medeiros-lima/Dotfiles.git"
+
+
+# Install packages on pacman
+pacman_install(){
+    pacman -S --noconfirm ${pacman_pkgs[@]}
+
+    git clone $yay_git
+    cd yay && makepkg -si --noconfirm && cd ..
+
+    yay -S --noconfirm ${yay_pkgs[@]}
+
+}
+
+# Get Dot files
+get_configs(){
+    git clone $dotfiles_repo
+    cp -r Dotfiles/terminator $USER/.config/
+    cp Dotfiles/terminator/.zshrc $USER/.zshrc
+}
+
+# oh-my-zsh
+#sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+pacman_install
